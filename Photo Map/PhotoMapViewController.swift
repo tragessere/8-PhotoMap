@@ -9,7 +9,8 @@
 import UIKit
 import MapKit
 
-class PhotoMapViewController: UIViewController {
+class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+	
 	@IBOutlet weak var mapView: MKMapView!
 
     override func viewDidLoad() {
@@ -38,7 +39,30 @@ class PhotoMapViewController: UIViewController {
     }
     */
 	@IBAction func didPressCamara(sender: AnyObject) {
+		let vc = UIImagePickerController()
+		vc.delegate = self
+		vc.allowsEditing = true
 		
+		if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+			vc.sourceType = UIImagePickerControllerSourceType.Camera
+		} else {
+			vc.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
+		}
+		
+		self.presentViewController(vc, animated: true, completion: nil)
 	}
 
+	func imagePickerController(picker: UIImagePickerController,
+		didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+			// Get the image captured by the UIImagePickerController
+			let originalImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+			let editedImage = info[UIImagePickerControllerEditedImage] as! UIImage
+			
+			// Do something with the images (based on your use case)
+			
+			// Dismiss UIImagePickerController to go back to your original view controller
+			dismissViewControllerAnimated(true) { () -> Void in
+				self.performSegueWithIdentifier("tagSegue", sender: self)
+			}
+	}
 }
