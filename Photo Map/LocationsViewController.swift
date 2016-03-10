@@ -8,11 +8,17 @@
 
 import UIKit
 
+// Protocol definition - top of LocationsViewController.swift
+protocol LocationsViewControllerDelegate : class {
+	func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber)
+}
+
 class LocationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+	var delegate: LocationsViewControllerDelegate!
 
     // TODO: Fill in actual CLIENT_ID and CLIENT_SECRET
-    let CLIENT_ID = "CLIENT_ID GOES HERE"
-    let CLIENT_SECRET = "CLIENT_SECRET GOES HERE"
+    let CLIENT_ID = "QA1L0Z0ZNA2QVEEDHFPQWK0I5F1DE3GPLSNW4BZEBGJXUCFL"
+    let CLIENT_SECRET = "W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH21ZCPUMCU"
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -43,7 +49,17 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         
         return cell
     }
-    
+	
+	func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+		print("selected row")
+		let venue = results[indexPath.row] as! NSDictionary
+		
+		let lat = venue.valueForKeyPath("location.lat") as! NSNumber
+		let lng = venue.valueForKeyPath("location.lng") as! NSNumber
+		
+		delegate.locationsPickedLocation(self, latitude: lat, longitude: lng)
+	}
+	
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         let newText = NSString(string: searchBar.text!).stringByReplacingCharactersInRange(range, withString: text)
         fetchLocations(newText)
