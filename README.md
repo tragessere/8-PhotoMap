@@ -6,3 +6,9 @@
 - Placeholders for `PhotoMapViewController` and `FullImageViewController`
 
     
+
+## Gif Walkthrough
+
+![walkthrough](http://i.imgur.com/em0zEPS.gif)
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).

@@ -50,7 +50,7 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
 	
-	func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		print("selected row")
 		let venue = results[indexPath.row] as! NSDictionary
 		
@@ -58,6 +58,8 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
 		let lng = venue.valueForKeyPath("location.lng") as! NSNumber
 		
 		delegate.locationsPickedLocation(self, latitude: lat, longitude: lng)
+		
+		navigationController?.popViewControllerAnimated(true)
 	}
 	
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
